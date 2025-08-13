@@ -1,5 +1,8 @@
 package com.kaaneneskpc
 
+import com.kaaneneskpc.presentation.config.configureLogging
+import com.kaaneneskpc.presentation.config.configureRouting
+import com.kaaneneskpc.presentation.config.configureSerialization
 import io.ktor.server.application.*
 
 fun main(args: Array<String>) {
@@ -7,7 +10,7 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-    configureFrameworks()
+    configureLogging()
     configureSerialization()
     configureRouting()
 }
