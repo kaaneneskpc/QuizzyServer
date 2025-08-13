@@ -8,6 +8,11 @@ import io.ktor.server.routing.get
 
 fun Route.getAllQuizQuestions() {
     get(path = "/quiz/questions") {
-        call.respond(quizQuestions)
+        val topicCode = call.queryParameters["topicCode"]?.toIntOrNull()
+        val limit = call.queryParameters["limit"]?.toIntOrNull()
+        val filteredQuestions = quizQuestions
+            .filter { it.topicCode == topicCode }
+            .take(limit ?: 1)
+        call.respond(filteredQuestions)
     }
 }
