@@ -14,7 +14,6 @@ import com.mongodb.kotlin.client.coroutine.MongoDatabase
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
-import java.util.logging.Filter
 
 class QuizQuestionRepositoryImpl(
     mongoDatabase: MongoDatabase
