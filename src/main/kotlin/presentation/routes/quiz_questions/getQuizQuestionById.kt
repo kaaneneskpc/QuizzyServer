@@ -1,13 +1,15 @@
 package com.kaaneneskpc.presentation.routes.quiz_questions
 
 import com.kaaneneskpc.domain.model.QuizQuestion
-import com.kaaneneskpc.presentation.config.quizQuestions
+import com.kaaneneskpc.domain.repository.QuizQuestionRepository
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 
-fun Route.getQuizQuestionById() {
+fun Route.getQuizQuestionById(
+    repository: QuizQuestionRepository
+) {
     get(path = "/quiz/questions/{questionId}") {
         val id = call.parameters["questionId"]
         if (id.isNullOrBlank()) {
@@ -15,8 +17,9 @@ fun Route.getQuizQuestionById() {
                 message = "Question Id needed!",
                 status = HttpStatusCode.BadRequest
             )
+            return@get
         }
-        val question: QuizQuestion? = quizQuestions.find { it.id == id }
+        val question = repository.getQuestionById(id)
         if (question != null) {
             call.respond(
                 status = HttpStatusCode.OK,

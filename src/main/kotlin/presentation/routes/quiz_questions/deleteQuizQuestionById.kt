@@ -1,13 +1,15 @@
 package com.kaaneneskpc.presentation.routes.quiz_questions
 
-import com.kaaneneskpc.presentation.config.quizQuestions
+import com.kaaneneskpc.domain.repository.QuizQuestionRepository
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 
-fun Route.deleteQuizQuestionById() {
+fun Route.deleteQuizQuestionById(
+    repository: QuizQuestionRepository
+) {
     delete(path = "/quiz/questions/{questionId}") {
         val id = call.parameters["questionId"]
         if (id.isNullOrBlank()) {
@@ -17,7 +19,7 @@ fun Route.deleteQuizQuestionById() {
             )
             return@delete
         }
-        val isDeleted = quizQuestions.removeIf { it.id == id }
+        val isDeleted = repository.deleteQuestionById(id)
         if (isDeleted) {
             call.respond(HttpStatusCode.NoContent)
         } else {
@@ -26,7 +28,5 @@ fun Route.deleteQuizQuestionById() {
                 status = HttpStatusCode.NotFound
             )
         }
-        quizQuestions.removeIf { it.id == id }
-        call.respondText("Quiz Question deleted successfully!")
     }
 }
