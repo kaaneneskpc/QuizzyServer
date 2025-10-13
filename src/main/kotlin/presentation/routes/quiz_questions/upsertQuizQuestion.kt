@@ -2,6 +2,9 @@ package com.kaaneneskpc.presentation.routes.quiz_questions
 
 import com.kaaneneskpc.domain.model.QuizQuestion
 import com.kaaneneskpc.domain.repository.QuizQuestionRepository
+import com.kaaneneskpc.domain.util.onFailure
+import com.kaaneneskpc.domain.util.onSuccess
+import com.kaaneneskpc.util.respondWithError
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
@@ -14,9 +17,13 @@ fun Route.upsertQuizQuestion(
     post(path = "/quiz/questions") {
         val question = call.receive<QuizQuestion>()
         repository.upsertQuestion(question)
-        call.respond(
-            message = "Question added successfully!",
-            status = HttpStatusCode.Created
-        )
+            .onSuccess {
+                call.respond(
+                    message = "Question added successfully!",
+                    status = HttpStatusCode.Created
+                )
+            }.onFailure { error ->
+                respondWithError(error)
+            }
     }
 }

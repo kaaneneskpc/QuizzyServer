@@ -1,6 +1,10 @@
 package com.kaaneneskpc.presentation.routes.quiz_questions
 
 import com.kaaneneskpc.domain.repository.QuizQuestionRepository
+import com.kaaneneskpc.domain.util.DataError
+import com.kaaneneskpc.domain.util.onFailure
+import com.kaaneneskpc.domain.util.onSuccess
+import com.kaaneneskpc.util.respondWithError
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -12,18 +16,14 @@ fun Route.getAllQuizQuestions(
     get(path = "/quiz/questions") {
         val topicCode = call.queryParameters["topicCode"]?.toIntOrNull()
         val limit = call.queryParameters["limit"]?.toIntOrNull()
-        val filteredQuestions = repository.getAllQuestions(topicCode, limit)
-
-        if (filteredQuestions.isNotEmpty()) {
-            call.respond(
-                message = filteredQuestions,
-                status = HttpStatusCode.OK
-            )
-        } else {
-            call.respond(
-                message = "No Quiz Questions",
-                status = HttpStatusCode.NotFound
-            )
+        repository.getAllQuestions(topicCode, limit)
+            .onSuccess { quizQuestions ->
+                call.respond(
+                    message = quizQuestions,
+                    status = HttpStatusCode.OK
+                )
+            }.onFailure { error ->
+                respondWithError(error)
+            }
         }
-    }
 }
