@@ -10,9 +10,13 @@ import com.kaaneneskpc.presentation.routes.quiz_questions.getAllQuizQuestions
 import com.kaaneneskpc.presentation.routes.quiz_questions.getQuizQuestionById
 import com.kaaneneskpc.presentation.routes.quiz_questions.upsertQuizQuestion
 import io.ktor.server.application.Application
+import io.ktor.server.application.install
+import io.ktor.server.resources.Resources
 import io.ktor.server.routing.routing
 
 fun Application.configureRouting() {
+
+    install(Resources)
 
     val mongoDatabase = DatabaseFactory.create()
     val quizQuestionRepository: QuizQuestionRepository = QuizQuestionRepositoryImpl(mongoDatabase)
