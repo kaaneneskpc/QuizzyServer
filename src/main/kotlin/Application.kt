@@ -1,5 +1,6 @@
 package com.kaaneneskpc
 
+import com.kaaneneskpc.presentation.config.configureKoin
 import com.kaaneneskpc.presentation.config.configureLogging
 import com.kaaneneskpc.presentation.config.configureRouting
 import com.kaaneneskpc.presentation.config.configureSerialization
@@ -12,6 +13,7 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
+    configureKoin()
     configureLogging()
     configureSerialization()
     configureRouting()

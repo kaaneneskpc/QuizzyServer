@@ -15,15 +15,15 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.resources.Resources
 import io.ktor.server.routing.routing
+import org.koin.ktor.ext.inject
 
 fun Application.configureRouting() {
 
     install(Resources)
 
-    val mongoDatabase = DatabaseFactory.create()
-    val quizQuestionRepository: QuizQuestionRepository = QuizQuestionRepositoryImpl(mongoDatabase)
-    val quizTopicRepository: QuizTopicRepository = QuizTopicRepositoryImpl(mongoDatabase)
-    val issueReportRepository: IssueReportRepository = IssueReportRepositoryImpl(mongoDatabase)
+    val quizQuestionRepository: QuizQuestionRepository by inject()
+    val quizTopicRepository: QuizTopicRepository by inject()
+    val issueReportRepository: IssueReportRepository by inject()
 
     routing {
         root()
