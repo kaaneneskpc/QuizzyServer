@@ -1,11 +1,10 @@
-package com.kaaneneskpc.presentation.routes.quiz_questions
+package com.kaaneneskpc.presentation.routes.path
 
 import io.ktor.resources.*
 
 @Resource(path = "/quiz/questions")
 class QuizQuestionRoutesPath(
-    val topicCode: Int? = null,
-    val limit: Int? = null
+    val topicCode: Int? = null
 ) {
 
     @Resource(path = "{questionId}")

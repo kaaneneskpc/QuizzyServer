@@ -1,4 +1,4 @@
-package com.kaaneneskpc.util
+package com.kaaneneskpc.presentation.util
 
 import com.kaaneneskpc.domain.util.DataError
 import io.ktor.http.*

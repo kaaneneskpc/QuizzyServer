@@ -1,6 +1,6 @@
 package com.kaaneneskpc.data.database
 
-import com.kaaneneskpc.util.Constant.MONGO_DATABASE_NAME
+import com.kaaneneskpc.presentation.util.Constant.MONGO_DATABASE_NAME
 import com.mongodb.kotlin.client.coroutine.MongoClient
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
 

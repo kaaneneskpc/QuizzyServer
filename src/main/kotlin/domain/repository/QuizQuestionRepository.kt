@@ -6,7 +6,7 @@ import com.kaaneneskpc.domain.util.Result
 
 interface QuizQuestionRepository {
 
-    suspend fun getAllQuestions(topicCode: Int?, limit: Int?): Result<List<QuizQuestion>, DataError>
+    suspend fun getAllQuestions(topicCode: Int?): Result<List<QuizQuestion>, DataError>
 
     suspend fun getRandomQuestions(topicCode: Int?, limit: Int?): Result<List<QuizQuestion>, DataError>
 

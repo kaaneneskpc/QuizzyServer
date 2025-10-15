@@ -7,19 +7,22 @@ import com.kaaneneskpc.domain.model.QuizQuestion
 import com.kaaneneskpc.domain.repository.QuizQuestionRepository
 import com.kaaneneskpc.domain.util.DataError
 import com.kaaneneskpc.domain.util.Result
-import com.kaaneneskpc.util.Constant.QUESTIONS_COLLECTION_NAME
+import com.kaaneneskpc.presentation.util.Constant.QUESTIONS_COLLECTION_NAME
+import com.mongodb.client.model.Aggregates
 import com.mongodb.client.model.Filters
 import com.mongodb.client.model.Updates
 import com.mongodb.kotlin.client.coroutine.MongoDatabase
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
+import org.bson.conversions.Bson
 
 class QuizQuestionRepositoryImpl(
     mongoDatabase: MongoDatabase
 ) : QuizQuestionRepository {
 
-    val questionCollection = mongoDatabase.getCollection<QuizQuestionEntity>(QUESTIONS_COLLECTION_NAME)
+    private val questionCollection = mongoDatabase
+        .getCollection<QuizQuestionEntity>(QUESTIONS_COLLECTION_NAME)
 
     override suspend fun upsertQuestion(
         question: QuizQuestion
@@ -51,13 +54,18 @@ class QuizQuestionRepositoryImpl(
     }
 
     override suspend fun insertQuestionsInBulk(questions: List<QuizQuestion>): Result<Unit, DataError> {
-        TODO("Not yet implemented")
+        return try {
+            val questionsEntity = questions.map { it.toQuizQuestionEntity() }
+            questionCollection.insertMany(questionsEntity)
+            Result.Success(Unit)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.Failure(DataError.Database)
+        }
     }
 
-
     override suspend fun getAllQuestions(
-        topicCode: Int?,
-        questionLimit: Int?
+        topicCode: Int?
     ): Result<List<QuizQuestion>, DataError> {
         return try {
             val filterQuery = topicCode?.let {
@@ -66,7 +74,6 @@ class QuizQuestionRepositoryImpl(
 
             val questions = questionCollection
                 .find(filter = filterQuery)
-                .limit(questionLimit ?: 10)
                 .map { it.toQuizQuestion() }
                 .toList()
 
@@ -86,7 +93,34 @@ class QuizQuestionRepositoryImpl(
         topicCode: Int?,
         limit: Int?
     ): Result<List<QuizQuestion>, DataError> {
-        TODO("Not yet implemented")
+        return try {
+            val questionLimit = limit?.takeIf { it > 0 } ?: 10
+            val filterQuery = Filters.eq(
+                QuizQuestionEntity::topicCode.name, topicCode
+            )
+            val matchStage = if (topicCode == null || topicCode == 0) {
+                emptyList<Bson>()
+            } else {
+                listOf(Aggregates.match(filterQuery))
+            }
+
+            val pipeline = matchStage + Aggregates.sample(questionLimit)
+
+            val questions = questionCollection
+                .aggregate(pipeline)
+                .map { it.toQuizQuestion() }
+                .toList()
+
+            if (questions.isNotEmpty()) {
+                Result.Success(questions)
+            } else {
+                Result.Failure(DataError.NotFound)
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Result.Failure(DataError.Database)
+        }
     }
 
     override suspend fun getQuestionById(
