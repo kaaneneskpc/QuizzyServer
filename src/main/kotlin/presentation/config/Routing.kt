@@ -1,9 +1,5 @@
 package com.kaaneneskpc.presentation.config
 
-import com.kaaneneskpc.data.database.DatabaseFactory
-import com.kaaneneskpc.data.repository.IssueReportRepositoryImpl
-import com.kaaneneskpc.data.repository.QuizQuestionRepositoryImpl
-import com.kaaneneskpc.data.repository.QuizTopicRepositoryImpl
 import com.kaaneneskpc.domain.repository.IssueReportRepository
 import com.kaaneneskpc.domain.repository.QuizQuestionRepository
 import com.kaaneneskpc.domain.repository.QuizTopicRepository
