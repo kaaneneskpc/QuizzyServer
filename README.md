@@ -281,15 +281,13 @@ data class IssueReport(
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 Developer
+## 👨‍💻 Developer && Contact
 
-**Kaan Enes Kıpçı**
+**Kaan Enes Kapıcı**
+- LinkedIn: [Kaan Enes Kapıcı](https://www.linkedin.com/in/kaaneneskpc/)
 - GitHub: [@kaaneneskpc](https://github.com/kaaneneskpc)
+- Email: kaaneneskpc1@gmail.com
 
-## 🆘 Support
-
-If you encounter any issues or have suggestions, please reach out to us via the [Issues](https://github.com/your-username/quizzy/issues) page.
-
----
+💡 **Open to feedback and collaboration!** If you're interested in modern mobile architecture, analytics dashboards, or multiplatform development, feel free to connect. 🚀
 
 ⭐ If you liked this project, don't forget to give it a star!
