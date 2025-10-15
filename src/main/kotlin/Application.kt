@@ -3,6 +3,8 @@ package com.kaaneneskpc
 import com.kaaneneskpc.presentation.config.configureLogging
 import com.kaaneneskpc.presentation.config.configureRouting
 import com.kaaneneskpc.presentation.config.configureSerialization
+import com.kaaneneskpc.presentation.config.configureStatusPages
+import com.kaaneneskpc.presentation.config.configureValidation
 import io.ktor.server.application.*
 
 fun main(args: Array<String>) {
@@ -13,4 +15,6 @@ fun Application.module() {
     configureLogging()
     configureSerialization()
     configureRouting()
+    configureValidation()
+    configureStatusPages()
 }
